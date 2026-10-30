@@ -1,5 +1,5 @@
 import pytest
-from src.shopflow.validate import validate_records
+from shopflow.validation.common import validate_records
 
 
 
@@ -119,3 +119,55 @@ def test_multiple_invalid_records_are_rejected():
 
     assert len(result["valid_records"]) == 1
     assert len(result["errors"]) == 2
+
+def test_missing_id_is_rejected_even_if_not_in_required_fields():
+    records = [
+        {"name": "Tshireletso"}
+    ]
+
+    result = validate_records(
+        records,
+        required_fields=["name"],
+        id_field="customer_id"
+    )
+
+    assert result["valid_records"] == []
+    assert result["errors"][0]["field"] == "customer_id"
+
+def test_invalid_first_record_does_not_reserve_id():
+    records = [
+        {"customer_id": 1, "name": ""},
+        {"customer_id": 1, "name": "Tshireletso"}
+    ]
+
+    result = validate_records(
+        records,
+        required_fields=["name"],
+        id_field="customer_id"
+    )
+
+    assert result["valid_records"] == [
+        {"customer_id": 1, "name": "Tshireletso"}
+    ]
+    assert len(result["errors"]) == 1
+    assert result["errors"][0]["reason"] == "Required field is missing or empty"
+
+
+
+def test_first_valid_record_wins_when_ids_are_duplicated():
+    records = [
+        {"customer_id": 1, "name": "Tshireletso"},
+        {"customer_id": 1, "name": "Sipho"}
+    ]
+
+    result = validate_records(
+        records,
+        required_fields=["name"],
+        id_field="customer_id"
+    )
+
+    assert result["valid_records"] == [
+        {"customer_id": 1, "name": "Tshireletso"}
+    ]
+    assert len(result["errors"]) == 1
+    assert result["errors"][0]["reason"] == "Duplicate ID"

@@ -17,10 +17,18 @@ def validate_records(records, required_fields, id_field):
                     "reason": "Required field is missing or empty"
                 })
 
-        # Check duplicate IDs
+        # Check whether ID is missing
         record_id = record.get(id_field)
 
-        if record_id is not None and str(record_id).strip() != "":
+        if record_id is None or str(record_id).strip() == "":
+            record_errors.append({
+                "record": record,
+                "field": id_field,
+                "reason": "Required field is missing or empty"
+            })
+
+        # Only check duplicates if required fields and ID are valid
+        if not record_errors:
             if record_id in seen_ids:
                 record_errors.append({
                     "record": record,
