@@ -7,6 +7,7 @@ from shopflow.validation.products import validate_product_records
 from shopflow.validation.orders import validate_order_records
 from shopflow.validation.order_items import validate_order_item_records
 from shopflow.validation.data_relationships import validate_relationships
+from shopflow.reporting import save_validation_errors
 from shopflow.load import (
     create_tables,
     insert_customers,
@@ -73,7 +74,7 @@ def run_pipeline(data_directory, database_path):
     valid_orders = relationship_result["valid_orders"]
     valid_order_items = relationship_result["valid_order_items"]
 
-    
+
     valid_customers = transform_customers(valid_customers)
     valid_products = transform_products(valid_products)
     valid_orders = transform_orders(valid_orders)
@@ -101,6 +102,12 @@ def run_pipeline(data_directory, database_path):
 
     finally:
         connection.close()
+        
+    # Save validation errors
+    save_validation_errors(
+        errors,
+        data_directory.parent / "reports" / "validation_errors.csv"
+    )
 
     return {
         "loaded": {
