@@ -1,0 +1,8 @@
+record,field,reason
+"{'order_id': '1001', 'customer_id': '1', 'order_date': '2026-10-01', 'status': 'completed'}",order_date,Order date is before customer creation date
+"{'order_id': '1009', 'customer_id': '1', 'order_date': '2026-10-10', 'status': 'completed'}",order_date,Order date is before customer creation date
+"{'order_id': '1020', 'customer_id': '1', 'order_date': '2026-10-18', 'status': 'completed'}",order_date,Order date is before customer creation date
+"{'order_item_id': '1', 'order_id': '1001', 'product_id': '1', 'quantity': '1', 'unit_price': '5400'}",order_id,Order does not exist or was rejected
+"{'order_item_id': '9', 'order_id': '1009', 'product_id': '9', 'quantity': '1', 'unit_price': '4100'}",order_id,Order does not exist or was rejected
+"{'order_item_id': '24', 'order_id': '1020', 'product_id': '4', 'quantity': '1', 'unit_price': '3800'}",order_id,Order does not exist or was rejected
+"{'order_item_id': '25', 'order_id': '1020', 'product_id': '10', 'quantity': '1', 'unit_price': '4500'}",order_id,Order does not exist or was rejected
