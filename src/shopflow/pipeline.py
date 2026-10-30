@@ -14,6 +14,12 @@ from shopflow.load import (
     insert_orders,
     insert_order_items
 )
+from shopflow.transform import (
+    transform_customers,
+    transform_products,
+    transform_orders,
+    transform_order_items
+)
 
 
 def run_pipeline(data_directory, database_path):
@@ -66,6 +72,12 @@ def run_pipeline(data_directory, database_path):
 
     valid_orders = relationship_result["valid_orders"]
     valid_order_items = relationship_result["valid_order_items"]
+
+    
+    valid_customers = transform_customers(valid_customers)
+    valid_products = transform_products(valid_products)
+    valid_orders = transform_orders(valid_orders)
+    valid_order_items = transform_order_items(valid_order_items)
 
     # Combine validation errors
     errors = (

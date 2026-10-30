@@ -86,7 +86,7 @@ def insert_products(connection, products):
         (
             product["product_id"],
             product["product_name"],
-            product["unit_price"],
+            str(product["unit_price"]),
             product["stock_quantity"]
         )
         for product in products
@@ -138,7 +138,7 @@ def insert_order_items(connection, order_items):
             item["order_id"],
             item["product_id"],
             item["quantity"],
-            item["unit_price"]
+            str(item["unit_price"])
         )
         for item in order_items
     ])
