@@ -1,9 +1,12 @@
 order_id,customer_id,order_date,status
 1001,1,2026-10-01,completed
 1002,2,2026-10-02,completed
+
+
 1003,3,2026-10-03,processing
 1004,4,2026-10-04,completed
 1005,5,2026-10-05,pending
+
 1006,6,2026-10-06,completed
 1007,7,2026-10-07,cancelled
 1008,8,2026-10-08,processing
