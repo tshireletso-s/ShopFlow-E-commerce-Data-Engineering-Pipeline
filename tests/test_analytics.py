@@ -93,3 +93,34 @@ def test_get_orders_by_status():
     ]
 
     connection.close()
+
+
+def test_get_data_quality_scorecard():
+    from shopflow.analytics import get_data_quality_scorecard
+
+    pipeline_result = {
+        "loaded": {
+            "customers": 9,
+            "products": 10
+        },
+        "rejected": {
+            "customers": 1,
+            "products": 0
+        }
+    }
+
+    result = get_data_quality_scorecard(pipeline_result)
+
+    assert result["customers"] == {
+        "total_records": 10,
+        "valid_records": 9,
+        "rejected_records": 1,
+        "quality_score": 90.0
+    }
+
+    assert result["products"] == {
+        "total_records": 10,
+        "valid_records": 10,
+        "rejected_records": 0,
+        "quality_score": 100.0
+    }    

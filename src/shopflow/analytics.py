@@ -73,3 +73,23 @@ def get_orders_by_status(connection):
     """)
 
     return cursor.fetchall()
+
+def get_data_quality_scorecard(pipeline_result):
+    scorecard = {}
+
+    for dataset in pipeline_result["loaded"]:
+        loaded = pipeline_result["loaded"][dataset]
+        rejected = pipeline_result["rejected"][dataset]
+        total = loaded + rejected
+
+        scorecard[dataset] = {
+            "total_records": total,
+            "valid_records": loaded,
+            "rejected_records": rejected,
+            "quality_score": (
+                round((loaded / total) * 100, 2)
+                if total > 0 else 0
+            )
+        }
+
+    return scorecard
